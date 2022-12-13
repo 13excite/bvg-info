@@ -7,7 +7,10 @@ import (
 	"log"
 )
 
-const DefaultConfigPath = "/etc/ch_config.yaml"
+const DefaultConfigPath = "/etc/bvg_config.yaml"
+
+// C is the global configuration
+var C = Config{}
 
 // Default returns config's object with default values
 func Default() *Config {

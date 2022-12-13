@@ -4,6 +4,7 @@ type Config struct {
 	ServerHost              string   `yaml:"server_host"`
 	ServerPort              string   `yaml:"server_port"`
 	LogLevel                string   `yaml:"log_level"`
+	PidFile                 string   `yaml:"pid_file"`
 	LogEncoding             string   `yaml:"log_encoding"`
 	LoggerColor             bool     `yaml:"logger_color"`
 	LoggerDisableStacktrace bool     `yaml:"logger_disable_stacktrace"`
