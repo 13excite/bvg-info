@@ -1,0 +1,16 @@
+---
+server_host: 127.0.0.1
+server_port: 8081
+log_level: info
+log_encoding: console
+logger_color: true
+logger_disable_stacktrace: true
+logger_dev_mode: true
+logger_disable_caller: false
+log_disabled_http:
+  - "/version"
+
+vbb:
+  scan_interval: 90
+  api_endpoint: https://v5.vbb.transport.rest
+  api_max_result: 15
