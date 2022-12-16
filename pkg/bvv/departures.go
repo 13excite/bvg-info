@@ -1,5 +1,6 @@
 package bvv
 
+// Hardcode nearby station (move to config????)
 const (
 	Sudostallee_Kongisheide string = "sudost_konigsheide"
 	Schnellerstr_135               = "schnel_str_135"
@@ -7,31 +8,6 @@ const (
 	S_Schöneweide_sterndamm        = "s_schoneweide_sterndamm"
 	S_Schöneweide_Vorplatz         = "s_schoneweide_sterndamm_vorplatz"
 )
-
-type Stop struct {
-	Type     string   `json:"type"`
-	ID       string   `json:"id"`
-	Name     string   `json:"name"`
-	Location Location `json:"location"`
-	Products Products `json:"products"`
-}
-
-type Location struct {
-	Type      string  `json:"type"`
-	ID        string  `json:"id"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-}
-
-type Products struct {
-	Suburban bool `json:"suburban"`
-	Subway   bool `json:"subway"`
-	Tram     bool `json:"tram"`
-	Bus      bool `json:"bus"`
-	Ferry    bool `json:"ferry"`
-	Express  bool `json:"express"`
-	Regional bool `json:"regional"`
-}
 
 // NearbyDepartures returns map of nearby public transport stations
 func NearbyDepartures() map[string]Stop {
