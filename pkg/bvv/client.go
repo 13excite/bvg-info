@@ -2,38 +2,59 @@ package bvv
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"time"
 
 	"go.uber.org/zap"
 )
 
 // BvgClient is a struct of bvg api client
 type BvgClient struct {
-	HttpClient *http.Client
+	httpClient *http.Client
 	APIURL     string
 	logger     *zap.SugaredLogger
 }
 
 const (
-	nearbyDepartesPath = "/api/blbla"
+	nearbyDepartesPath = "/stops/123/departures"
 )
 
-func NewClent(httpClient *http.Client, apiUrl string) *BvgClient {
+func NewClent(apiUrl string) *BvgClient {
 	return &BvgClient{
-		HttpClient: httpClient,
-		APIURL:     apiUrl,
-		logger:     zap.S().With("package", "client"),
+		APIURL: apiUrl,
+		logger: zap.S().With("package", "bvv-client"),
+		httpClient: &http.Client{
+			Timeout: time.Second * 5,
+		},
 	}
 }
 
-func (c *BvgClient) GetNearbyDepartes(requestParams string) error {
-	req, err := http.NewRequest("GET", c.APIURL+nearbyDepartesPath+requestParams, nil)
+// SetHttpClient redefines default http client
+func (c *BvgClient) SetHTTPClient(client *http.Client) {
+	c.httpClient = client
+}
+
+func (c *BvgClient) GetNearbyDepartes() ([]byte, error) {
+	req, _ := http.NewRequest(http.MethodGet, c.APIURL+nearbyDepartesPath, nil)
+
+	res, err := c.httpClient.Do(req)
 	if err != nil {
-		c.logger.Error("Bvg http client error", "error", err, "address", c.APIURL+nearbyDepartesPath)
-		return fmt.Errorf("Bvg http client error. Address: %s", c.APIURL+nearbyDepartesPath)
+		c.logger.Error("GetNearbyDepartes clent error", "error", err, "address", c.APIURL+nearbyDepartesPath)
+		return nil, err
+	}
+	if res.StatusCode != http.StatusOK {
+		c.logger.Error("GetNearbyDepartes bad status code. ", "StatusCode:", res.StatusCode,
+			"address", c.APIURL+nearbyDepartesPath,
+		)
+		return nil, fmt.Errorf("Unexpected status code of GetNearbyDepartes: %d", res.StatusCode)
 	}
 
-	defer req.Body.Close()
-
-	return nil
+	defer res.Body.Close()
+	bytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		c.logger.Error("GetNearbyDepartes reading body failed", "error", err)
+		return nil, err
+	}
+	return bytes, nil
 }
