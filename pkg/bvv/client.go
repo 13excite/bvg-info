@@ -1,11 +1,12 @@
 package bvv
 
 import (
+	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"time"
 
+	"github.com/13excite/bvg-info/pkg/store"
 	"go.uber.org/zap"
 )
 
@@ -35,7 +36,7 @@ func (c *BvgClient) SetHTTPClient(client *http.Client) {
 	c.httpClient = client
 }
 
-func (c *BvgClient) GetNearbyDepartes() ([]byte, error) {
+func (c *BvgClient) GetNearbyDepartes() ([]store.StopDepartures, error) {
 	req, _ := http.NewRequest(http.MethodGet, c.APIURL+nearbyDepartesPath, nil)
 
 	res, err := c.httpClient.Do(req)
@@ -51,10 +52,17 @@ func (c *BvgClient) GetNearbyDepartes() ([]byte, error) {
 	}
 
 	defer res.Body.Close()
-	bytes, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		c.logger.Error("GetNearbyDepartes reading body failed", "error", err)
-		return nil, err
+
+	var departes []store.StopDepartures
+
+	if err := json.NewDecoder(res.Body).Decode(&departes); err != nil {
+		c.logger.Error("GetNearbyDepartes decoding error", "error", err)
+		return nil, fmt.Errorf("failed to decode body into departes slice: %w", err)
 	}
-	return bytes, nil
+	// bytes, err := ioutil.ReadAll(res.Body)
+	// if err != nil {
+	// 	c.logger.Error("GetNearbyDepartes reading body failed", "error", err)
+	// 	return nil, err
+	// }
+	return departes, nil
 }
