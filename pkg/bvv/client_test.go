@@ -8,6 +8,14 @@ import (
 	"testing"
 )
 
+var exampleJSON string = `{
+	"id": 2355,
+	"time": "10:20:30",
+	"from": "Strendamm",
+	"tram": true
+  }
+]`
+
 type RoundTripFunc func(req *http.Request) *http.Response
 
 func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
@@ -27,9 +35,8 @@ func TestIcsClientGetData(t *testing.T) {
 		statusCode     int
 		response       *http.Response
 		apiUrl         string
-		bbBody         []byte
 		wantStatusCode int
-		wandBody       []byte
+		wantBody       []byte
 		wantURL        string
 		wantErr        error
 	}{
@@ -38,30 +45,16 @@ func TestIcsClientGetData(t *testing.T) {
 			response: &http.Response{
 				StatusCode: http.StatusOK,
 				// Send response to be tested
-				Body: ioutil.NopCloser(bytes.NewBufferString(`[
-					{
-					  "id": 2355,
-					  "time": "10:20:30",
-					  "from": "Strendamm",
-					  "tram": true
-					}
-				  ]`)),
+				Body: ioutil.NopCloser(bytes.NewBufferString(exampleJSON)),
 				// Must be set to non-nil value or it panics
 				Header: make(http.Header),
 			},
 			statusCode:     http.StatusOK,
 			apiUrl:         "http://v5.vbb.transport.rest",
 			wantStatusCode: http.StatusOK,
-			wandBody: []byte(`[
-				{
-				  "id": 2355,
-				  "time": "10:20:30",
-				  "from": "Strendamm",
-				  "tram": true
-				}
-			  ]`),
-			wantURL: "http://v5.vbb.transport.rest/stops/123/departures",
-			wantErr: nil,
+			wantBody:       []byte(exampleJSON),
+			wantURL:        "http://v5.vbb.transport.rest/stops/123/departures",
+			wantErr:        nil,
 		},
 	}
 
@@ -77,8 +70,8 @@ func TestIcsClientGetData(t *testing.T) {
 
 		body, err := bvvClient.GetNearbyDepartes()
 
-		require.Equal(t, tc.wantErr, err, tc.name)
+		require.Equal(t, tc.wantErr, err, "Test error: "+tc.name)
 
-		require.Equal(t, tc.wantErr, body, tc.name)
+		require.Equal(t, tc.wantBody, body, "Test body: "+tc.name)
 	}
 }
