@@ -8,12 +8,61 @@ import (
 	"testing"
 )
 
-var exampleJSON string = `{
-	"id": 2355,
-	"time": "10:20:30",
-	"from": "Strendamm",
-	"tram": true
-  }
+var exampleJSON string = `[
+	{
+		"tripId": "1|20914|3|86|24122022",
+		"stop": {
+			"type": "stop",
+			"id": "900000194519",
+			"name": "Südostallee/Königsheide",
+			"location": {
+				"type": "location",
+				"id": "900194519",
+				"latitude": 52.456516,
+				"longitude": 13.500755
+			},
+			"products": {
+				"suburban": false,
+				"subway": false,
+				"tram": false,
+				"bus": true,
+				"ferry": false,
+				"express": false,
+				"regional": false
+			},
+			"stationDHID": "de:11000:900194519"
+		},
+		"when": "2022-12-24T17:10:00+01:00",
+		"plannedWhen": "2022-12-24T17:10:00+01:00",
+		"delay": 0,
+		"platform": null,
+		"plannedPlatform": null,
+		"prognosisType": "prognosed",
+		"direction": "U Boddinstr.",
+		"provenance": null,
+		"origin": null,
+		"destination": {
+			"type": "stop",
+			"id": "900000079152",
+			"name": "Fontanestr./Flughafenstr.",
+			"location": {
+				"type": "location",
+				"id": "900079152",
+				"latitude": 52.480257,
+				"longitude": 13.421165
+			},
+			"products": {
+				"suburban": false,
+				"subway": false,
+				"tram": false,
+				"bus": true,
+				"ferry": false,
+				"express": false,
+				"regional": false
+			},
+			"stationDHID": "de:11000:900079152"
+		}
+	}
 ]`
 
 type RoundTripFunc func(req *http.Request) *http.Response
@@ -36,7 +85,7 @@ func TestIcsClientGetData(t *testing.T) {
 		response       *http.Response
 		apiUrl         string
 		wantStatusCode int
-		wantBody       []byte
+		wantStopName   string
 		wantURL        string
 		wantErr        error
 	}{
@@ -52,7 +101,7 @@ func TestIcsClientGetData(t *testing.T) {
 			statusCode:     http.StatusOK,
 			apiUrl:         "http://v5.vbb.transport.rest",
 			wantStatusCode: http.StatusOK,
-			wantBody:       []byte(exampleJSON),
+			wantStopName:   "Südostallee/Königsheide",
 			wantURL:        "http://v5.vbb.transport.rest/stops/123/departures",
 			wantErr:        nil,
 		},
@@ -68,10 +117,10 @@ func TestIcsClientGetData(t *testing.T) {
 		bvvClient := NewClent(tc.apiUrl)
 		bvvClient.SetHTTPClient(hClient)
 
-		body, err := bvvClient.GetNearbyDepartes()
+		departes, err := bvvClient.GetNearbyDepartes()
 
 		require.Equal(t, tc.wantErr, err, "Test error: "+tc.name)
 
-		require.Equal(t, tc.wantBody, body, "Test body: "+tc.name)
+		require.Equal(t, tc.wantStopName, departes[0].Stop.Name, "Test struct decoding: "+tc.name)
 	}
 }
