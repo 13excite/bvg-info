@@ -2,10 +2,11 @@ package bvv
 
 import (
 	"bytes"
-	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"net/http"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 var exampleJSON string = `[
@@ -82,6 +83,7 @@ func TestIcsClientGetData(t *testing.T) {
 	cases := []struct {
 		name           string
 		statusCode     int
+		stopId         int
 		response       *http.Response
 		apiUrl         string
 		wantStatusCode int
@@ -90,7 +92,8 @@ func TestIcsClientGetData(t *testing.T) {
 		wantErr        error
 	}{
 		{
-			name: "200 OK response",
+			name:   "200 OK response",
+			stopId: 900000194519,
 			response: &http.Response{
 				StatusCode: http.StatusOK,
 				// Send response to be tested
@@ -102,7 +105,7 @@ func TestIcsClientGetData(t *testing.T) {
 			apiUrl:         "http://v5.vbb.transport.rest",
 			wantStatusCode: http.StatusOK,
 			wantStopName:   "Südostallee/Königsheide",
-			wantURL:        "http://v5.vbb.transport.rest/stops/123/departures",
+			wantURL:        "http://v5.vbb.transport.rest/stops/900000194519/departures",
 			wantErr:        nil,
 		},
 	}
@@ -117,7 +120,7 @@ func TestIcsClientGetData(t *testing.T) {
 		bvvClient := NewClent(tc.apiUrl)
 		bvvClient.SetHTTPClient(hClient)
 
-		departes, err := bvvClient.GetNearbyDepartes()
+		departes, err := bvvClient.GetNearbyDepartes(tc.stopId)
 
 		require.Equal(t, tc.wantErr, err, "Test error: "+tc.name)
 

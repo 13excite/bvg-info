@@ -18,7 +18,7 @@ type BvgClient struct {
 }
 
 const (
-	nearbyDepartesPath = "/stops/123/departures"
+	nearbyDepartesPath = "/stops/%d/departures"
 )
 
 func NewClent(apiUrl string) *BvgClient {
@@ -36,8 +36,9 @@ func (c *BvgClient) SetHTTPClient(client *http.Client) {
 	c.httpClient = client
 }
 
-func (c *BvgClient) GetNearbyDepartes() ([]store.StopDepartures, error) {
-	req, _ := http.NewRequest(http.MethodGet, c.APIURL+nearbyDepartesPath, nil)
+func (c *BvgClient) GetNearbyDepartes(stopID int) ([]store.StopDepartures, error) {
+	urlString := c.APIURL + fmt.Sprintf(nearbyDepartesPath, stopID)
+	req, _ := http.NewRequest(http.MethodGet, urlString, nil)
 
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -59,10 +60,6 @@ func (c *BvgClient) GetNearbyDepartes() ([]store.StopDepartures, error) {
 		c.logger.Error("GetNearbyDepartes decoding error", "error", err)
 		return nil, fmt.Errorf("failed to decode body into departes slice: %w", err)
 	}
-	// bytes, err := ioutil.ReadAll(res.Body)
-	// if err != nil {
-	// 	c.logger.Error("GetNearbyDepartes reading body failed", "error", err)
-	// 	return nil, err
-	// }
+
 	return departes, nil
 }
