@@ -23,11 +23,6 @@ type gCache struct {
 	logger *zap.SugaredLogger
 }
 
-type stops struct {
-	Name     string
-	Departes []store.StopDepartures
-}
-
 func NewGCache() *gCache {
 	return &gCache{
 		stops:  gcache.New(cacheSize).Expiration(cacheTTL).ARC().Build(),
@@ -35,8 +30,8 @@ func NewGCache() *gCache {
 	}
 }
 
-func (gc *gCache) update(s stops, expireIn time.Duration) error {
-	if err := gc.stops.SetWithExpire(s.Name, s, expireIn); err != nil {
+func (gc *gCache) update(s store.CachedStops) error {
+	if err := gc.stops.Set(s.Name, s); err != nil {
 		gc.logger.Error("Update cache error", "error", err)
 		return err
 	}
@@ -44,17 +39,17 @@ func (gc *gCache) update(s stops, expireIn time.Duration) error {
 	return nil
 }
 
-func (gc *gCache) read(stopName string) (stops, error) {
+func (gc *gCache) read(stopName string) (store.CachedStops, error) {
 	val, err := gc.stops.Get(stopName)
 	gc.logger.Info("Reading from cache for key: ", stopName)
 	if err != nil {
 		if errors.Is(err, gcache.KeyNotFoundError) {
 			gc.logger.Error("Read cache error", "error", errUserNotInCache)
-			return stops{}, errUserNotInCache
+			return store.CachedStops{}, errUserNotInCache
 		}
 		gc.logger.Error("Read cache error", "error", err)
-		return stops{}, fmt.Errorf("get: %w", err)
+		return store.CachedStops{}, fmt.Errorf("get: %w", err)
 	}
 
-	return val.(stops), nil
+	return val.(store.CachedStops), nil
 }
