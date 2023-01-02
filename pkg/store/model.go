@@ -138,3 +138,8 @@ type StopDepartures struct {
 		Longitude float64 `json:"longitude"`
 	} `json:"currentTripPosition"`
 }
+
+type CachedStops struct {
+	Name     string
+	Departes []StopDepartures
+}

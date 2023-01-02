@@ -13,7 +13,7 @@ const DefaultConfigPath = "/etc/bvg_config.yaml"
 var C = Config{}
 
 // Default returns config's object with default values
-func Default() *Config {
+func (conf *Config) Defaults() *Config {
 	return &Config{
 		LogLevel:                "info",
 		LogEncoding:             "console",

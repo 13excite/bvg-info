@@ -1,8 +1,4 @@
-package bvv
-
-import (
-	"github.com/13excite/bvg-info/pkg/store"
-)
+package store
 
 // Hardcode nearby station (move to config????)
 const (
@@ -14,35 +10,35 @@ const (
 )
 
 // NearbyDepartures returns map of nearby public transport stations
-func NearbyDepartures() map[string]store.Stop {
-	return map[string]store.Stop{
+func NearbyDepartures() map[string]Stop {
+	return map[string]Stop{
 		Sudostallee_Kongisheide: {
 			ID:   "900000194519",
 			Name: "Südostallee/Königsheide",
-			Location: store.Location{
+			Location: Location{
 				ID: "900194519",
 			},
-			Products: store.Products{
+			Products: Products{
 				Bus: true,
 			},
 		},
 		Schnellerstr_135: {
 			ID:   "900000192510",
 			Name: "Schnellerstr. 135",
-			Location: store.Location{
+			Location: Location{
 				ID: "900192510",
 			},
-			Products: store.Products{
+			Products: Products{
 				Bus: true,
 			},
 		},
 		S_Schöneweide: {
 			ID:   "900000192001",
 			Name: "S Schöneweide",
-			Location: store.Location{
+			Location: Location{
 				ID: "900192001",
 			},
-			Products: store.Products{
+			Products: Products{
 				Bus:      true,
 				Tram:     true,
 				Suburban: true,
@@ -52,10 +48,10 @@ func NearbyDepartures() map[string]store.Stop {
 		S_Schöneweide_sterndamm: {
 			ID:   "900000194006",
 			Name: "S Schöneweide/Sterndamm",
-			Location: store.Location{
+			Location: Location{
 				ID: "900194006",
 			},
-			Products: store.Products{
+			Products: Products{
 				Bus:      true,
 				Tram:     true,
 				Suburban: true,
@@ -65,10 +61,10 @@ func NearbyDepartures() map[string]store.Stop {
 		S_Schöneweide_Vorplatz: {
 			ID:   "900000192701",
 			Name: "S Schöneweide [Vorplatz]",
-			Location: store.Location{
+			Location: Location{
 				ID: "900192701",
 			},
-			Products: store.Products{
+			Products: Products{
 				Bus:      true,
 				Tram:     true,
 				Suburban: true,
