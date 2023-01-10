@@ -13,6 +13,11 @@ type httpClient interface {
 	GetNearbyDepartes(int) ([]store.StopDepartures, error)
 }
 
+type cacheStore interface {
+	update(store.CachedStops) error
+	read(string) (store.CachedStops, error)
+}
+
 type Job struct {
 	runInterval    int
 	logger         *zap.SugaredLogger
@@ -36,6 +41,7 @@ func (j *Job) httpClientRunner() {
 
 	}
 	fmt.Println(stops)
+
 }
 
 func (j *Job) RunBackgroundHTTPJob(ctx context.Context) error {
