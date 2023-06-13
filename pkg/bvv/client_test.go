@@ -9,62 +9,115 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var exampleJSON string = `[
-	{
-		"tripId": "1|20914|3|86|24122022",
+var exampleJSON string = `
+{
+	"departures": [
+	  {
+		"tripId": "1|1124378|2|80|13062023",
 		"stop": {
-			"type": "stop",
-			"id": "900000194519",
-			"name": "Südostallee/Königsheide",
-			"location": {
-				"type": "location",
-				"id": "900194519",
-				"latitude": 52.456516,
-				"longitude": 13.500755
-			},
-			"products": {
-				"suburban": false,
-				"subway": false,
-				"tram": false,
-				"bus": true,
-				"ferry": false,
-				"express": false,
-				"regional": false
-			},
-			"stationDHID": "de:11000:900194519"
+		  "type": "stop",
+		  "id": "733612",
+		  "name": "Südostallee/Königsheide, Berlin",
+		  "location": {
+			"type": "location",
+			"id": "733612",
+			"latitude": 52.456579,
+			"longitude": 13.500638
+		  },
+		  "products": {
+			"nationalExpress": false,
+			"national": false,
+			"regionalExpress": false,
+			"regional": false,
+			"suburban": false,
+			"bus": true,
+			"ferry": false,
+			"subway": false,
+			"tram": false,
+			"taxi": false
+		  }
 		},
-		"when": "2022-12-24T17:10:00+01:00",
-		"plannedWhen": "2022-12-24T17:10:00+01:00",
+		"when": "2023-06-13T10:39:00+02:00",
+		"plannedWhen": "2023-06-13T10:39:00+02:00",
 		"delay": 0,
 		"platform": null,
 		"plannedPlatform": null,
 		"prognosisType": "prognosed",
-		"direction": "U Boddinstr.",
+		"direction": "S Schöneweide",
 		"provenance": null,
+		"line": {
+		  "type": "line",
+		  "id": "5-vbbbvb-166",
+		  "fahrtNr": "22483",
+		  "name": "Bus 166",
+		  "public": true,
+		  "adminCode": "vbbBVB",
+		  "productName": "Bus",
+		  "mode": "bus",
+		  "product": "bus",
+		  "operator": {
+			"type": "operator",
+			"id": "nahreisezug",
+			"name": "Nahreisezug"
+		  }
+		},
+		"remarks": [],
 		"origin": null,
 		"destination": {
-			"type": "stop",
-			"id": "900000079152",
-			"name": "Fontanestr./Flughafenstr.",
+		  "type": "stop",
+		  "id": "733587",
+		  "name": "Schöneweide (S)/Sterndamm, Berlin",
+		  "location": {
+			"type": "location",
+			"id": "733587",
+			"latitude": 52.453397,
+			"longitude": 13.509618
+		  },
+		  "products": {
+			"nationalExpress": false,
+			"national": false,
+			"regionalExpress": false,
+			"regional": true,
+			"suburban": true,
+			"bus": true,
+			"ferry": false,
+			"subway": false,
+			"tram": true,
+			"taxi": false
+		  },
+		  "station": {
+			"type": "station",
+			"id": "8010041",
+			"name": "Berlin-Schöneweide",
 			"location": {
-				"type": "location",
-				"id": "900079152",
-				"latitude": 52.480257,
-				"longitude": 13.421165
+			  "type": "location",
+			  "id": "8010041",
+			  "latitude": 52.455204,
+			  "longitude": 13.508773
 			},
 			"products": {
-				"suburban": false,
-				"subway": false,
-				"tram": false,
-				"bus": true,
-				"ferry": false,
-				"express": false,
-				"regional": false
-			},
-			"stationDHID": "de:11000:900079152"
+			  "nationalExpress": false,
+			  "national": false,
+			  "regionalExpress": false,
+			  "regional": true,
+			  "suburban": true,
+			  "bus": true,
+			  "ferry": false,
+			  "subway": false,
+			  "tram": true,
+			  "taxi": false
+			}
+		  }
+		},
+		"currentTripPosition": {
+		  "type": "location",
+		  "latitude": 52.459213,
+		  "longitude": 13.496458
 		}
-	}
-]`
+	  }
+	]
+}
+`
 
 type RoundTripFunc func(req *http.Request) *http.Response
 
@@ -93,7 +146,7 @@ func TestIcsClientGetData(t *testing.T) {
 	}{
 		{
 			name:   "200 OK response",
-			stopId: 900000194519,
+			stopId: 733612,
 			response: &http.Response{
 				StatusCode: http.StatusOK,
 				// Send response to be tested
@@ -102,10 +155,10 @@ func TestIcsClientGetData(t *testing.T) {
 				Header: make(http.Header),
 			},
 			statusCode:     http.StatusOK,
-			apiUrl:         "http://v5.vbb.transport.rest",
+			apiUrl:         "https://v6.db.transport.rest",
 			wantStatusCode: http.StatusOK,
-			wantStopName:   "Südostallee/Königsheide",
-			wantURL:        "http://v5.vbb.transport.rest/stops/900000194519/departures",
+			wantStopName:   "Südostallee/Königsheide, Berlin",
+			wantURL:        "https://v6.db.transport.rest/stops/733612/departures",
 			wantErr:        nil,
 		},
 	}
@@ -124,6 +177,6 @@ func TestIcsClientGetData(t *testing.T) {
 
 		require.Equal(t, tc.wantErr, err, "Test error: "+tc.name)
 
-		require.Equal(t, tc.wantStopName, departes[0].Stop.Name, "Test struct decoding: "+tc.name)
+		require.Equal(t, tc.wantStopName, departes.Departures[0].Stop.Name, "Test struct decoding: "+tc.name)
 	}
 }

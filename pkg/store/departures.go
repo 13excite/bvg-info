@@ -13,10 +13,10 @@ const (
 func NearbyDepartures() map[string]Stop {
 	return map[string]Stop{
 		Sudostallee_Kongisheide: {
-			ID:   "900000194519",
+			ID:   "733612",
 			Name: "Südostallee/Königsheide",
 			Location: Location{
-				ID: "900194519",
+				ID: "733612",
 			},
 			Products: Products{
 				Bus: true,

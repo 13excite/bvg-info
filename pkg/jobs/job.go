@@ -10,7 +10,7 @@ import (
 )
 
 type httpClient interface {
-	GetNearbyDepartes(int) ([]store.StopDepartures, error)
+	GetNearbyDepartes(int) (*store.Departures, error)
 }
 
 type Job struct {
@@ -30,7 +30,7 @@ func New(runInterval int, httphttpClient httpClient) *Job {
 
 func (j *Job) httpClientRunner() {
 	// TODO: pass arg to the function
-	stops, err := j.hClient.GetNearbyDepartes(123)
+	stops, err := j.hClient.GetNearbyDepartes(733559)
 	if err != nil {
 		j.logger.Error("httpJob failed. Got error from client", "error", err)
 

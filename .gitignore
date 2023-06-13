@@ -12,3 +12,4 @@ __pycache__
 env
 frontend/node_modules
 *.yaml
+coverage.txt

@@ -12,5 +12,5 @@ log_disabled_http:
 
 vbb:
   scan_interval: 90
-  api_endpoint: https://v5.vbb.transport.rest
+  api_endpoint: https://v6.db.transport.rest
   api_max_result: 15

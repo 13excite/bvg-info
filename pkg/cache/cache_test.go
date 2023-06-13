@@ -23,7 +23,7 @@ func TestUpdate(t *testing.T) {
 		{
 			name:                  "Set/get value from cache",
 			getterCacheKey:        store.Sudostallee_Kongisheide,
-			wantStopIDFromCache:   "900000194519",
+			wantStopIDFromCache:   "733612",
 			wantStopNameFromCache: "Südostallee/Königsheide",
 			wantWhenFromCache:     time.Date(2022, 12, 29, 15, 14, 0, 0, time.UTC),
 			wantError:             nil,
@@ -41,18 +41,43 @@ func TestUpdate(t *testing.T) {
 							Longitude float64 "json:\"longitude\""
 						} "json:\"location\""
 						Products struct {
-							Suburban bool "json:\"suburban\""
-							Subway   bool "json:\"subway\""
-							Tram     bool "json:\"tram\""
-							Bus      bool "json:\"bus\""
-							Ferry    bool "json:\"ferry\""
-							Express  bool "json:\"express\""
-							Regional bool "json:\"regional\""
+							NationalExpress bool "json:\"nationalExpress\""
+							National        bool "json:\"national\""
+							RegionalExpress bool "json:\"regionalExpress\""
+							Regional        bool "json:\"regional\""
+							Suburban        bool "json:\"suburban\""
+							Bus             bool "json:\"bus\""
+							Ferry           bool "json:\"ferry\""
+							Subway          bool "json:\"subway\""
+							Tram            bool "json:\"tram\""
+							Taxi            bool "json:\"taxi\""
 						} "json:\"products\""
-						StationDHID string "json:\"stationDHID\""
+						Station struct {
+							Type     string "json:\"type\""
+							ID       string "json:\"id\""
+							Name     string "json:\"name\""
+							Location struct {
+								Type      string  "json:\"type\""
+								ID        string  "json:\"id\""
+								Latitude  float64 "json:\"latitude\""
+								Longitude float64 "json:\"longitude\""
+							} "json:\"location\""
+							Products struct {
+								NationalExpress bool "json:\"nationalExpress\""
+								National        bool "json:\"national\""
+								RegionalExpress bool "json:\"regionalExpress\""
+								Regional        bool "json:\"regional\""
+								Suburban        bool "json:\"suburban\""
+								Bus             bool "json:\"bus\""
+								Ferry           bool "json:\"ferry\""
+								Subway          bool "json:\"subway\""
+								Tram            bool "json:\"tram\""
+								Taxi            bool "json:\"taxi\""
+							} "json:\"products\""
+						} "json:\"station\""
 					}{
 						Type: "stop",
-						ID:   "900000194519",
+						ID:   "733612",
 						Name: "Südostallee/Königsheide",
 					},
 					When:        time.Date(2022, 12, 29, 15, 14, 0, 0, time.UTC),
@@ -78,18 +103,43 @@ func TestUpdate(t *testing.T) {
 							Longitude float64 "json:\"longitude\""
 						} "json:\"location\""
 						Products struct {
-							Suburban bool "json:\"suburban\""
-							Subway   bool "json:\"subway\""
-							Tram     bool "json:\"tram\""
-							Bus      bool "json:\"bus\""
-							Ferry    bool "json:\"ferry\""
-							Express  bool "json:\"express\""
-							Regional bool "json:\"regional\""
+							NationalExpress bool "json:\"nationalExpress\""
+							National        bool "json:\"national\""
+							RegionalExpress bool "json:\"regionalExpress\""
+							Regional        bool "json:\"regional\""
+							Suburban        bool "json:\"suburban\""
+							Bus             bool "json:\"bus\""
+							Ferry           bool "json:\"ferry\""
+							Subway          bool "json:\"subway\""
+							Tram            bool "json:\"tram\""
+							Taxi            bool "json:\"taxi\""
 						} "json:\"products\""
-						StationDHID string "json:\"stationDHID\""
+						Station struct {
+							Type     string "json:\"type\""
+							ID       string "json:\"id\""
+							Name     string "json:\"name\""
+							Location struct {
+								Type      string  "json:\"type\""
+								ID        string  "json:\"id\""
+								Latitude  float64 "json:\"latitude\""
+								Longitude float64 "json:\"longitude\""
+							} "json:\"location\""
+							Products struct {
+								NationalExpress bool "json:\"nationalExpress\""
+								National        bool "json:\"national\""
+								RegionalExpress bool "json:\"regionalExpress\""
+								Regional        bool "json:\"regional\""
+								Suburban        bool "json:\"suburban\""
+								Bus             bool "json:\"bus\""
+								Ferry           bool "json:\"ferry\""
+								Subway          bool "json:\"subway\""
+								Tram            bool "json:\"tram\""
+								Taxi            bool "json:\"taxi\""
+							} "json:\"products\""
+						} "json:\"station\""
 					}{
 						Type: "stop",
-						ID:   "900000194519",
+						ID:   "733612",
 						Name: "Südostallee/Königsheide",
 					},
 					When:        time.Date(2022, 12, 29, 15, 14, 0, 0, time.UTC),
@@ -98,7 +148,6 @@ func TestUpdate(t *testing.T) {
 			},
 		},
 	}
-
 	gCache := NewGCache()
 
 	for _, tc := range cases {

@@ -28,6 +28,10 @@ type Products struct {
 	Regional bool `json:"regional"`
 }
 
+type Departures struct {
+	Departures []StopDepartures `json:"departures"`
+}
+
 // Stops departures models
 type StopDepartures struct {
 	TripID string `json:"tripId"`
@@ -42,22 +46,47 @@ type StopDepartures struct {
 			Longitude float64 `json:"longitude"`
 		} `json:"location"`
 		Products struct {
-			Suburban bool `json:"suburban"`
-			Subway   bool `json:"subway"`
-			Tram     bool `json:"tram"`
-			Bus      bool `json:"bus"`
-			Ferry    bool `json:"ferry"`
-			Express  bool `json:"express"`
-			Regional bool `json:"regional"`
+			NationalExpress bool `json:"nationalExpress"`
+			National        bool `json:"national"`
+			RegionalExpress bool `json:"regionalExpress"`
+			Regional        bool `json:"regional"`
+			Suburban        bool `json:"suburban"`
+			Bus             bool `json:"bus"`
+			Ferry           bool `json:"ferry"`
+			Subway          bool `json:"subway"`
+			Tram            bool `json:"tram"`
+			Taxi            bool `json:"taxi"`
 		} `json:"products"`
-		StationDHID string `json:"stationDHID"`
+		Station struct {
+			Type     string `json:"type"`
+			ID       string `json:"id"`
+			Name     string `json:"name"`
+			Location struct {
+				Type      string  `json:"type"`
+				ID        string  `json:"id"`
+				Latitude  float64 `json:"latitude"`
+				Longitude float64 `json:"longitude"`
+			} `json:"location"`
+			Products struct {
+				NationalExpress bool `json:"nationalExpress"`
+				National        bool `json:"national"`
+				RegionalExpress bool `json:"regionalExpress"`
+				Regional        bool `json:"regional"`
+				Suburban        bool `json:"suburban"`
+				Bus             bool `json:"bus"`
+				Ferry           bool `json:"ferry"`
+				Subway          bool `json:"subway"`
+				Tram            bool `json:"tram"`
+				Taxi            bool `json:"taxi"`
+			} `json:"products"`
+		} `json:"station"`
 	} `json:"stop"`
 	When            time.Time   `json:"when"`
 	PlannedWhen     time.Time   `json:"plannedWhen"`
-	Delay           int         `json:"delay"`
-	Platform        string      `json:"platform"`
-	PlannedPlatform string      `json:"plannedPlatform"`
-	PrognosisType   string      `json:"prognosisType"`
+	Delay           interface{} `json:"delay"`
+	Platform        interface{} `json:"platform"`
+	PlannedPlatform interface{} `json:"plannedPlatform"`
+	PrognosisType   interface{} `json:"prognosisType"`
 	Direction       string      `json:"direction"`
 	Provenance      interface{} `json:"provenance"`
 	Line            struct {
@@ -75,42 +104,9 @@ type StopDepartures struct {
 			ID   string `json:"id"`
 			Name string `json:"name"`
 		} `json:"operator"`
-		Symbol  string `json:"symbol"`
-		Nr      int    `json:"nr"`
-		Metro   bool   `json:"metro"`
-		Express bool   `json:"express"`
-		Night   bool   `json:"night"`
-		Color   struct {
-			Fg string `json:"fg"`
-			Bg string `json:"bg"`
-		} `json:"color"`
 	} `json:"line"`
-	Remarks []struct {
-		Type    string `json:"type"`
-		Code    string `json:"code,omitempty"`
-		Text    string `json:"text"`
-		ID      string `json:"id,omitempty"`
-		Summary string `json:"summary,omitempty"`
-		Icon    struct {
-			Type  string      `json:"type"`
-			Title interface{} `json:"title"`
-		} `json:"icon,omitempty"`
-		Priority int `json:"priority,omitempty"`
-		Products struct {
-			Suburban bool `json:"suburban"`
-			Subway   bool `json:"subway"`
-			Tram     bool `json:"tram"`
-			Bus      bool `json:"bus"`
-			Ferry    bool `json:"ferry"`
-			Express  bool `json:"express"`
-			Regional bool `json:"regional"`
-		} `json:"products,omitempty"`
-		Company    string    `json:"company,omitempty"`
-		Categories []int     `json:"categories,omitempty"`
-		ValidFrom  time.Time `json:"validFrom,omitempty"`
-		ValidUntil time.Time `json:"validUntil,omitempty"`
-	} `json:"remarks"`
-	Origin      interface{} `json:"origin"`
+	Remarks     []interface{} `json:"remarks"`
+	Origin      interface{}   `json:"origin"`
 	Destination struct {
 		Type     string `json:"type"`
 		ID       string `json:"id"`
@@ -122,15 +118,17 @@ type StopDepartures struct {
 			Longitude float64 `json:"longitude"`
 		} `json:"location"`
 		Products struct {
-			Suburban bool `json:"suburban"`
-			Subway   bool `json:"subway"`
-			Tram     bool `json:"tram"`
-			Bus      bool `json:"bus"`
-			Ferry    bool `json:"ferry"`
-			Express  bool `json:"express"`
-			Regional bool `json:"regional"`
+			NationalExpress bool `json:"nationalExpress"`
+			National        bool `json:"national"`
+			RegionalExpress bool `json:"regionalExpress"`
+			Regional        bool `json:"regional"`
+			Suburban        bool `json:"suburban"`
+			Bus             bool `json:"bus"`
+			Ferry           bool `json:"ferry"`
+			Subway          bool `json:"subway"`
+			Tram            bool `json:"tram"`
+			Taxi            bool `json:"taxi"`
 		} `json:"products"`
-		StationDHID string `json:"stationDHID"`
 	} `json:"destination"`
 	CurrentTripPosition struct {
 		Type      string  `json:"type"`
