@@ -23,20 +23,20 @@ func NearbyDepartures() map[string]Stop {
 			},
 		},
 		Schnellerstr_135: {
-			ID:   "900000192510",
+			ID:   "362510",
 			Name: "Schnellerstr. 135",
 			Location: Location{
-				ID: "900192510",
+				ID: "362510",
 			},
 			Products: Products{
 				Bus: true,
 			},
 		},
 		S_Schöneweide: {
-			ID:   "900000192001",
+			ID:   "733559",
 			Name: "S Schöneweide",
 			Location: Location{
-				ID: "900192001",
+				ID: "733559",
 			},
 			Products: Products{
 				Bus:      true,
@@ -46,23 +46,10 @@ func NearbyDepartures() map[string]Stop {
 			},
 		},
 		S_Schöneweide_sterndamm: {
-			ID:   "900000194006",
-			Name: "S Schöneweide/Sterndamm",
+			ID:   "733587",
+			Name: "Schöneweide (S)/Sterndamm",
 			Location: Location{
-				ID: "900194006",
-			},
-			Products: Products{
-				Bus:      true,
-				Tram:     true,
-				Suburban: true,
-				Regional: true,
-			},
-		},
-		S_Schöneweide_Vorplatz: {
-			ID:   "900000192701",
-			Name: "S Schöneweide [Vorplatz]",
-			Location: Location{
-				ID: "900192701",
+				ID: "733587",
 			},
 			Products: Products{
 				Bus:      true,

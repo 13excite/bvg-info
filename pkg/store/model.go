@@ -32,6 +32,17 @@ type Departures struct {
 	Departures []StopDepartures `json:"departures"`
 }
 
+type CacheStop struct {
+	ID          string
+	Name        string
+	Time        time.Time
+	PlannedTime time.Time
+	Direction   string
+	LineName    string
+	ProductName string
+	Remarks     []string
+}
+
 // Stops departures models
 type StopDepartures struct {
 	TripID string `json:"tripId"`
@@ -139,5 +150,5 @@ type StopDepartures struct {
 
 type CachedStops struct {
 	Name     string
-	Departes []StopDepartures
+	Departes []CacheStop
 }
