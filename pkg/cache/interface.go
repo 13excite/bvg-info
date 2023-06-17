@@ -5,6 +5,6 @@ import (
 )
 
 type Cache interface {
-	Update(store.CachedStops) error
-	Read(string) (store.CachedStops, error)
+	Update(key string, stops []store.CachedStop) error
+	Read(string) ([]store.CachedStop, error)
 }

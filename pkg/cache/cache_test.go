@@ -59,7 +59,7 @@ func TestUpdate(t *testing.T) {
 	gCache := NewGCache()
 
 	for _, tc := range cases {
-		err := gCache.Update(tc.stops)
+		err := gCache.Update(tc.stops.Name, tc.stops.Departes)
 		require.Equal(t, nil, err, "Got error from cache update. Test case: "+tc.name)
 
 		got, err := gCache.Read(tc.getterCacheKey)
@@ -68,9 +68,9 @@ func TestUpdate(t *testing.T) {
 			require.Equal(t, tc.wantError, err, "Got error from cache read: Key: "+tc.stops.Name+". Case: "+tc.name)
 
 		} else {
-			require.Equal(t, tc.wantStopIDFromCache, got.Departes[0].ID, "Stop.ID is incorrect. Test case: "+tc.name)
-			require.Equal(t, tc.wantStopNameFromCache, got.Departes[0].Name, "Stop.Name field is incorrect. Test case: "+tc.name)
-			require.Equal(t, tc.wantWhenFromCache, got.Departes[0].Time, "When field is incorrect. Test case: "+tc.name)
+			require.Equal(t, tc.wantStopIDFromCache, got[0].ID, "Stop.ID is incorrect. Test case: "+tc.name)
+			require.Equal(t, tc.wantStopNameFromCache, got[0].Name, "Stop.Name field is incorrect. Test case: "+tc.name)
+			require.Equal(t, tc.wantWhenFromCache, got[0].Time, "When field is incorrect. Test case: "+tc.name)
 		}
 
 	}
