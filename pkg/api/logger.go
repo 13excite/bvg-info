@@ -14,8 +14,11 @@ import (
 var reqid uint64
 var prefix string
 
+// ReqIDKey is an own type to avoid collisions
+type ReqIDKey int
+
 // RequestIDKey is the key that holds the unique request ID in a request context.
-const RequestIDKey int = 0
+const RequestIDKey ReqIDKey = 0
 
 // RequestIDHeader is the name of the HTTP Header which contains the request id.
 // Exported so that it can be changed by developers

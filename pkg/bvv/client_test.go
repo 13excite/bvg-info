@@ -2,7 +2,7 @@ package bvv
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 
@@ -150,7 +150,7 @@ func TestIcsClientGetData(t *testing.T) {
 			response: &http.Response{
 				StatusCode: http.StatusOK,
 				// Send response to be tested
-				Body: ioutil.NopCloser(bytes.NewBufferString(exampleJSON)),
+				Body: io.NopCloser(bytes.NewBufferString(exampleJSON)),
 				// Must be set to non-nil value or it panics
 				Header: make(http.Header),
 			},
@@ -158,7 +158,7 @@ func TestIcsClientGetData(t *testing.T) {
 			apiUrl:         "https://v6.db.transport.rest",
 			wantStatusCode: http.StatusOK,
 			wantStopName:   "Südostallee/Königsheide, Berlin",
-			wantURL:        "https://v6.db.transport.rest/stops/733612/departures",
+			wantURL:        "https://v6.db.transport.rest/stops/733612/departures?duration=20",
 			wantErr:        nil,
 		},
 	}
