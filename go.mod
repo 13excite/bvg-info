@@ -1,6 +1,6 @@
 module github.com/13excite/bvg-info
 
-go 1.18
+go 1.20
 
 require (
 	github.com/blendle/zapdriver v1.3.1 // indirect

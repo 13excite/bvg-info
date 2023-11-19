@@ -30,26 +30,26 @@ func NewGCache() *gCache {
 	}
 }
 
-func (gc *gCache) update(s store.CachedStops) error {
-	if err := gc.stops.Set(s.Name, s); err != nil {
+func (gc *gCache) Update(key string, stops []store.CachedStop) error {
+	if err := gc.stops.Set(key, stops); err != nil {
 		gc.logger.Error("Update cache error", "error", err)
 		return err
 	}
-	gc.logger.Info("Cache updated for key: ", s.Name)
+	gc.logger.Info("Cache updated for key: ", key)
 	return nil
 }
 
-func (gc *gCache) read(stopName string) (store.CachedStops, error) {
+func (gc *gCache) Read(stopName string) ([]store.CachedStop, error) {
 	val, err := gc.stops.Get(stopName)
 	gc.logger.Info("Reading from cache for key: ", stopName)
 	if err != nil {
 		if errors.Is(err, gcache.KeyNotFoundError) {
 			gc.logger.Error("Read cache error", "error", errUserNotInCache)
-			return store.CachedStops{}, errUserNotInCache
+			return []store.CachedStop{}, errUserNotInCache
 		}
 		gc.logger.Error("Read cache error", "error", err)
-		return store.CachedStops{}, fmt.Errorf("get: %w", err)
+		return []store.CachedStop{}, fmt.Errorf("get: %w", err)
 	}
 
-	return val.(store.CachedStops), nil
+	return val.([]store.CachedStop), nil
 }

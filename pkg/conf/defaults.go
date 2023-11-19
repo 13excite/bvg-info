@@ -3,8 +3,8 @@ package conf
 import (
 	"fmt"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"log"
+	"os"
 )
 
 const DefaultConfigPath = "/etc/bvg_config.yaml"
@@ -37,7 +37,7 @@ func (conf *Config) ReadConfigFile(configPath string) {
 	if configPath == "" {
 		configPath = DefaultConfigPath
 	}
-	yamlConfig, err := ioutil.ReadFile(configPath)
+	yamlConfig, err := os.ReadFile(configPath)
 	if err != nil {
 		log.Fatal(err)
 	}

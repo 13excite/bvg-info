@@ -3,29 +3,10 @@ package store
 import "time"
 
 // nearby stations models
-type Stop struct {
-	Type     string   `json:"type"`
-	ID       string   `json:"id"`
-	Name     string   `json:"name"`
-	Location Location `json:"location"`
-	Products Products `json:"products"`
-}
-
-type Location struct {
-	Type      string  `json:"type"`
-	ID        string  `json:"id"`
-	Latitude  float64 `json:"latitude"`
-	Longitude float64 `json:"longitude"`
-}
-
-type Products struct {
-	Suburban bool `json:"suburban"`
-	Subway   bool `json:"subway"`
-	Tram     bool `json:"tram"`
-	Bus      bool `json:"bus"`
-	Ferry    bool `json:"ferry"`
-	Express  bool `json:"express"`
-	Regional bool `json:"regional"`
+type Departure struct {
+	Type string `json:"type"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }
 
 type Departures struct {
@@ -139,5 +120,16 @@ type StopDepartures struct {
 
 type CachedStops struct {
 	Name     string
-	Departes []StopDepartures
+	Departes []CachedStop
+}
+
+type CachedStop struct {
+	ID          string
+	Name        string
+	Time        time.Time
+	PlannedTime time.Time
+	Direction   string
+	LineName    string
+	ProductName string
+	Remarks     []interface{}
 }

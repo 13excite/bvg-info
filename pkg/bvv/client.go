@@ -18,7 +18,7 @@ type BvgClient struct {
 }
 
 const (
-	nearbyDepartesPath = "/stops/%d/departures"
+	nearbyDepartesPath = "/stops/%d/departures?duration=20"
 )
 
 func NewClent(apiUrl string) *BvgClient {
