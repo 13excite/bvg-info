@@ -2,6 +2,7 @@ package bvv
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"testing"
@@ -132,7 +133,7 @@ func NewTestClient(fn RoundTripFunc) *http.Client {
 	}
 }
 
-func TestIcsClientGetData(t *testing.T) {
+func TestGetNearbyDepartes(t *testing.T) {
 	cases := []struct {
 		name           string
 		statusCode     int
@@ -161,6 +162,40 @@ func TestIcsClientGetData(t *testing.T) {
 			wantURL:        "https://v6.db.transport.rest/stops/733612/departures?duration=20",
 			wantErr:        nil,
 		},
+		{
+			name:   "500 Internal Server Error response",
+			stopId: 733612,
+			response: &http.Response{
+				StatusCode: http.StatusInternalServerError,
+				// Send response to be tested
+				Body: io.NopCloser(bytes.NewBufferString(exampleJSON)),
+				// Must be set to non-nil value or it panics
+				Header: make(http.Header),
+			},
+			statusCode:     http.StatusOK,
+			apiUrl:         "https://v6.db.transport.rest",
+			wantStatusCode: http.StatusOK,
+			wantStopName:   "Südostallee/Königsheide, Berlin",
+			wantURL:        "https://v6.db.transport.rest/stops/733612/departures?duration=20",
+			wantErr:        fmt.Errorf("Unexpected status code of GetNearbyDepartes: 500"),
+		},
+		{
+			name:   "bad json response",
+			stopId: 733612,
+			response: &http.Response{
+				StatusCode: http.StatusOK,
+				// Send response to be tested
+				Body: io.NopCloser(bytes.NewBufferString("{bad json")),
+				// Must be set to non-nil value or it panics
+				Header: make(http.Header),
+			},
+			statusCode:     http.StatusOK,
+			apiUrl:         "https://v6.db.transport.rest",
+			wantStatusCode: http.StatusOK,
+			wantStopName:   "Südostallee/Königsheide, Berlin",
+			wantURL:        "https://v6.db.transport.rest/stops/733612/departures?duration=20",
+			wantErr:        fmt.Errorf("failed to decode body into departes slice: invalid character 'b' looking for beginning of object key string"),
+		},
 	}
 
 	for _, tc := range cases {
@@ -175,8 +210,10 @@ func TestIcsClientGetData(t *testing.T) {
 
 		departes, err := bvvClient.GetNearbyDepartes(tc.stopId)
 
-		require.Equal(t, tc.wantErr, err, "Test error: "+tc.name)
-
-		require.Equal(t, tc.wantStopName, departes.Departures[0].Stop.Name, "Test struct decoding: "+tc.name)
+		if err != nil {
+			require.Equal(t, tc.wantErr, err, "Test error: "+tc.name)
+		} else {
+			require.Equal(t, tc.wantStopName, departes.Departures[0].Stop.Name, "Test struct decoding: "+tc.name)
+		}
 	}
 }

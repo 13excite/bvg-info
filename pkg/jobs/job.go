@@ -33,10 +33,10 @@ func New(runInterval int, httphttpClient httpClient, cache cache.Cache) *Job {
 }
 
 func (j *Job) httpClientRunner() {
-
 	for stopKey, stop := range store.NearbyDepartures() {
 		stopId, _ := strconv.Atoi(stop.ID)
 
+		// TODO: test it in async mode,but need to make sure that the client will not be banned
 		stops, err := j.hClient.GetNearbyDepartes(stopId)
 		if err != nil {
 			j.logger.Error("httpJob failed. Got error from client", "error", err)

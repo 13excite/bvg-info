@@ -2,9 +2,10 @@ package conf
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"log"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 const DefaultConfigPath = "/etc/bvg_config.yaml"
@@ -26,7 +27,7 @@ func (conf *Config) Defaults() *Config {
 		ServerPort:              "8081",
 		VBB: VBB{
 			ScanSecInterval: 90,
-			API:             "https://v5.vbb.transport.rest",
+			API:             "https://v6.vbb.transport.rest",
 			APIMaxResults:   10,
 		},
 	}

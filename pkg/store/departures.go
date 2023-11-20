@@ -16,17 +16,17 @@ func NearbyDepartures() map[string]Departure {
 			ID:   "733612",
 			Name: "Südostallee/Königsheide",
 		},
-		Schnellerstr_135: {
-			ID:   "362510",
-			Name: "Schnellerstr. 135",
-		},
 		S_Schöneweide: {
-			ID:   "733559",
+			ID:   "8010041",
 			Name: "S Schöneweide",
 		},
-		S_Schöneweide_sterndamm: {
-			ID:   "733587",
-			Name: "Schöneweide (S)/Sterndamm",
-		},
+		// S_Schöneweide_sterndamm: {
+		// 	ID:   "733587",
+		// 	Name: "Schöneweide (S)/Sterndamm",
+		// },
+		// Schnellerstr_135: {
+		// 	ID:   "362510",
+		// 	Name: "Schnellerstr. 135",
+		// },
 	}
 }

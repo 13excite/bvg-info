@@ -10,6 +10,7 @@ import (
 	"net/http"
 )
 
+// Server is the API server
 type Server struct {
 	router *mux.Router
 	server *http.Server
