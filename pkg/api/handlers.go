@@ -7,7 +7,6 @@ import (
 )
 
 func (s *Server) GetData(w http.ResponseWriter, r *http.Request) {
-
 	cachedStops := []store.CachedStop{}
 	for stopKey := range store.NearbyDepartures() {
 		stops, err := s.cache.Read(stopKey)

@@ -4,16 +4,19 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/rs/xid"
 	"net/http"
+
+	"github.com/rs/xid"
 )
 
+// ErrResponse is a struct for JSON error response
 type ErrResponse struct {
 	Status  string `json:"status,omitempty"`
 	Error   string `json:"error,omitempty"`
 	ErrorID string `json:"error_id,omitempty"`
 }
 
+// RenderJSON renders JSON response with given status code
 func RenderJSON(w http.ResponseWriter, code int, v interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	b := new(bytes.Buffer)
