@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	errUserNotInCache = errors.New("the stop isn't in cache")
+	errStopNotInCache = errors.New("the stop isn't in cache")
 )
 
 const (
@@ -41,11 +41,11 @@ func (gc *gCache) Update(key string, stops []store.CachedStop) error {
 
 func (gc *gCache) Read(stopName string) ([]store.CachedStop, error) {
 	val, err := gc.stops.Get(stopName)
-	gc.logger.Info("Reading from cache for key: ", stopName)
+	gc.logger.Debug("Reading from cache for key: ", stopName)
 	if err != nil {
 		if errors.Is(err, gcache.KeyNotFoundError) {
-			gc.logger.Error("Read cache error", "error", errUserNotInCache)
-			return []store.CachedStop{}, errUserNotInCache
+			gc.logger.Error("Key not found error", "error", errStopNotInCache)
+			return []store.CachedStop{}, errStopNotInCache
 		}
 		gc.logger.Error("Read cache error", "error", err)
 		return []store.CachedStop{}, fmt.Errorf("get: %w", err)
